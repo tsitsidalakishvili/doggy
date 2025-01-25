@@ -347,7 +347,7 @@ elif selection == "Project Description":
     |                       | Protective Gear                  | 100 pairs    |
     |                       | Waste Disposal Systems           | Various      |
     """)
-    
+
     st.subheader("4.3 Services Provided")
     st.markdown("""
     **Rescue and Intake:**
@@ -460,6 +460,7 @@ elif selection == "Budget":
     """)
     # (The Budget section can remain as previously implemented or be adjusted as needed.)
     # ...
+    st.write("**[Detailed budget breakdown goes here.]**")
 
 # Sustainability Plan with Interactive Budget Elements
 elif selection == "Sustainability Plan":
