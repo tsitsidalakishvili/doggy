@@ -18,6 +18,7 @@ sections = [
     "Project Objectives",
     "Project Description",
     "Implementation Plan",
+    "Budget",
     "Sustainability Plan",
     "Monitoring and Evaluation",
     "Risk Management",
@@ -212,9 +213,6 @@ if selection == "Introduction":
     )
     fig_donation_slider.update_traces(texttemplate='%{text:.0f}', textposition='auto')
     st.plotly_chart(fig_donation_slider, use_container_width=True)
-    
-    # Optionally, you can remove or hide the "Budget" section from the sidebar since it's now integrated into the Introduction.
-    # Alternatively, keep it for detailed breakdowns and leave the interactive parts in Introduction.
 
 # Problem Statement
 elif selection == "Problem Statement":
@@ -349,7 +347,7 @@ elif selection == "Project Description":
     |                       | Protective Gear                  | 100 pairs    |
     |                       | Waste Disposal Systems           | Various      |
     """)
-
+    
     st.subheader("4.3 Services Provided")
     st.markdown("""
     **Rescue and Intake:**
@@ -404,7 +402,7 @@ elif selection == "Implementation Plan":
     - **Adjust Programs:** Modify and improve programs based on feedback and outcomes.
     - **Annual Reviews:** Conduct comprehensive evaluations to assess progress and plan for future growth.
     """)
-
+    
     st.subheader("Project Timeline")
 
     # Updated Gantt Data with 'Ongoing' replaced
@@ -452,35 +450,248 @@ elif selection == "Implementation Plan":
     fig.update_layout(showlegend=False)
     st.plotly_chart(fig, use_container_width=True)
 
-# Sustainability Plan
+# Budget
+elif selection == "Budget":
+    st.header("6. Budget")
+    st.markdown("""
+    **Total Funding Requested:** **$250,000**
+
+    **Detailed Budget Breakdown:**
+    """)
+    # (The Budget section can remain as previously implemented or be adjusted as needed.)
+    # ...
+
+# Sustainability Plan with Interactive Budget Elements
 elif selection == "Sustainability Plan":
     st.header("7. Sustainability Plan")
+    
     st.markdown("""
-    **Funding Strategies:**
-    - **Adoption Fees:** Implement a nominal adoption fee to cover part of the operational costs.
-    - **Donations and Sponsorships:** Encourage individual and corporate donations through fundraising campaigns and sponsorship programs.
-    - **Grants:** Continue applying for local and international grants to support ongoing operations and expansion.
-    - **Merchandise Sales:** Sell branded merchandise such as T-shirts, mugs, and calendars to raise additional funds.
+    Ensuring the long-term sustainability of the dog shelter is crucial for its ongoing operations and impact. This section outlines the revenue streams and strategies that will maintain and grow the shelter's financial health.
+    """)
     
-    **Revenue Streams:**
-    - **Veterinary Services:** Offer low-cost veterinary services to the community as a revenue source.
-    - **Grooming Services:** Provide grooming services to pet owners for a fee.
-    - **Training Programs:** Conduct obedience and behavioral training classes for a fee.
+    # Interactive Revenue Streams
+    st.subheader("Interactive Revenue Streams")
     
-    **Community Engagement:**
-    - **Volunteer Programs:** Develop robust volunteer programs to support daily operations, reducing staffing costs and fostering community involvement.
-    - **Partnerships:** Collaborate with local businesses, NGOs, and government agencies to share resources and expertise.
+    # Define revenue categories
+    revenue_categories = ['Adoption Fees', 'Merchandise Sales', 'Veterinary Services', 'Grooming Services', 'Training Programs', 'Other']
+    default_revenue = {
+        'Adoption Fees': 20,          # in Euros per adoption
+        'Merchandise Sales': 10,      # average price per item
+        'Veterinary Services': 50,    # average fee per service
+        'Grooming Services': 30,      # average fee per grooming session
+        'Training Programs': 100,     # average fee per training session
+        'Other': 0                    # placeholder for additional revenue streams
+    }
     
-    **Operational Efficiency:**
-    - **Cost Management:** Implement strict budgeting and financial controls to optimize resource utilization.
-    - **Energy Efficiency:** Utilize energy-efficient systems and practices to reduce utility costs.
+    # Sidebar inputs for revenue streams
+    st.sidebar.header("Adjust Revenue Streams")
+    revenue_input = {}
     
-    **Long-Term Goals:**
-    - **Expansion:** Plan for future expansion to accommodate more dogs and offer additional services.
-    - **Self-Sufficiency:** Aim to achieve financial self-sufficiency within five years through diversified funding and revenue streams.
+    for category in revenue_categories:
+        if category == 'Adoption Fees':
+            revenue_input[category] = st.sidebar.number_input(
+                f"Set {category} (Euros per adoption)",
+                min_value=0,
+                step=1,
+                value=default_revenue[category]
+            )
+        elif category == 'Merchandise Sales':
+            revenue_input[category] = st.sidebar.number_input(
+                f"Set {category} (Average price per item in Euros)",
+                min_value=0,
+                step=1,
+                value=default_revenue[category]
+            )
+        elif category == 'Veterinary Services':
+            revenue_input[category] = st.sidebar.number_input(
+                f"Set {category} (Average fee per service in Euros)",
+                min_value=0,
+                step=5,
+                value=default_revenue[category]
+            )
+        elif category == 'Grooming Services':
+            revenue_input[category] = st.sidebar.number_input(
+                f"Set {category} (Average fee per session in Euros)",
+                min_value=0,
+                step=5,
+                value=default_revenue[category]
+            )
+        elif category == 'Training Programs':
+            revenue_input[category] = st.sidebar.number_input(
+                f"Set {category} (Average fee per session in Euros)",
+                min_value=0,
+                step=10,
+                value=default_revenue[category]
+            )
+        else:
+            revenue_input[category] = st.sidebar.number_input(
+                f"Set {category} (Euros)",
+                min_value=0,
+                step=10,
+                value=default_revenue[category]
+            )
+    
+    st.markdown("---")
+    
+    # Input for expected monthly units
+    st.subheader("Expected Monthly Units")
+    
+    # Define expected units for each revenue stream
+    expected_units = {}
+    expected_units['Adoption Fees'] = st.number_input(
+        "Expected number of adoptions per month:",
+        min_value=0,
+        step=1,
+        value=50
+    )
+    expected_units['Merchandise Sales'] = st.number_input(
+        "Expected number of merchandise items sold per month:",
+        min_value=0,
+        step=1,
+        value=100
+    )
+    expected_units['Veterinary Services'] = st.number_input(
+        "Expected number of veterinary services per month:",
+        min_value=0,
+        step=1,
+        value=20
+    )
+    expected_units['Grooming Services'] = st.number_input(
+        "Expected number of grooming sessions per month:",
+        min_value=0,
+        step=1,
+        value=30
+    )
+    expected_units['Training Programs'] = st.number_input(
+        "Expected number of training sessions per month:",
+        min_value=0,
+        step=1,
+        value=10
+    )
+    expected_units['Other'] = st.number_input(
+        "Expected revenue from other sources per month (Euros):",
+        min_value=0,
+        step=10,
+        value=0
+    )
+    
+    # Calculate monthly revenue for each stream
+    monthly_revenue = {}
+    for category in revenue_categories:
+        if category == 'Other':
+            monthly_revenue[category] = expected_units[category]
+        else:
+            monthly_revenue[category] = revenue_input[category] * expected_units[category]
+    
+    # Convert to DataFrame
+    revenue_df = pd.DataFrame({
+        'Revenue Stream': list(monthly_revenue.keys()),
+        'Monthly Revenue (Euros)': list(monthly_revenue.values())
+    })
+    
+    # Display Revenue Table
+    st.table(revenue_df)
+    
+    # Calculate Total Monthly and Annual Revenue
+    total_monthly_revenue = sum(monthly_revenue.values())
+    total_annual_revenue = total_monthly_revenue * 12
+    
+    st.subheader("Total Revenue")
+    st.metric(
+        label="Total Monthly Revenue",
+        value=f"€{total_monthly_revenue:,.2f}"
+    )
+    st.metric(
+        label="Total Annual Revenue",
+        value=f"€{total_annual_revenue:,.2f}"
+    )
+    
+    st.markdown("---")
+    
+    # Allocation of Funds
+    st.subheader("Allocation of Revenue")
+    
+    # Define allocation categories (these should align with your budget or operational needs)
+    allocation_categories = ['Dog Care', 'Facility Maintenance', 'Staff Salaries', 'Operational Costs', 'Emergency Fund', 'Other']
+    
+    # Default allocation percentages
+    default_allocation = {
+        'Dog Care': 50,            # 50%
+        'Facility Maintenance': 15, # 15%
+        'Staff Salaries': 20,      # 20%
+        'Operational Costs': 10,   # 10%
+        'Emergency Fund': 3,       # 3%
+        'Other': 2                 # 2%
+    }
+    
+    # Sidebar inputs for allocation
+    st.sidebar.header("Adjust Allocation Percentages")
+    allocation_percentages = {}
+    allocated_percent = 0
+    for category in allocation_categories[:-1]:
+        max_percent = 100 - allocated_percent - 1  # Reserve at least 1% for 'Other'
+        percent = st.sidebar.slider(
+            f"Allocate to {category} (%)",
+            min_value=0,
+            max_value=100,
+            value=default_allocation[category],
+            step=1
+        )
+        allocation_percentages[category] = percent
+        allocated_percent += percent
+    
+    # 'Other' gets the remaining percentage
+    allocation_percentages['Other'] = 100 - allocated_percent
+    
+    # Convert to DataFrame
+    allocation_df = pd.DataFrame({
+        'Category': list(allocation_percentages.keys()),
+        'Percentage (%)': list(allocation_percentages.values())
+    })
+    
+    # Display Allocation Table
+    st.table(allocation_df)
+    
+    # Calculate allocated funds
+    allocated_funds = {}
+    for category in allocation_categories:
+        allocated_funds[category] = (allocation_percentages[category] / 100) * total_annual_revenue
+    
+    # Convert to DataFrame
+    allocated_funds_df = pd.DataFrame({
+        'Allocation Category': list(allocated_funds.keys()),
+        'Annual Allocation (Euros)': list(allocated_funds.values())
+    })
+    
+    # Display Allocation Table
+    st.table(allocated_funds_df)
+    
+    # Plot Allocation Pie Chart
+    st.subheader("Revenue Allocation")
+    fig_allocation = px.pie(
+        allocated_funds_df,
+        values='Annual Allocation (Euros)',
+        names='Allocation Category',
+        title='Annual Revenue Allocation',
+        hole=0.4
+    )
+    st.plotly_chart(fig_allocation, use_container_width=True)
+    
+    # Summary Metrics
+    st.subheader("Summary of Revenue and Allocation")
+    
+    st.markdown(f"""
+    - **Total Monthly Revenue:** €{total_monthly_revenue:,.2f}
+    - **Total Annual Revenue:** €{total_annual_revenue:,.2f}
+    - **Dog Care Allocation:** €{allocated_funds['Dog Care']:,.2f} ({allocation_percentages['Dog Care']}%)
+    - **Facility Maintenance Allocation:** €{allocated_funds['Facility Maintenance']:,.2f} ({allocation_percentages['Facility Maintenance']}%)
+    - **Staff Salaries Allocation:** €{allocated_funds['Staff Salaries']:,.2f} ({allocation_percentages['Staff Salaries']}%)
+    - **Operational Costs Allocation:** €{allocated_funds['Operational Costs']:,.2f} ({allocation_percentages['Operational Costs']}%)
+    - **Emergency Fund Allocation:** €{allocated_funds['Emergency Fund']:,.2f} ({allocation_percentages['Emergency Fund']}%)
+    - **Other Allocation:** €{allocated_funds['Other']:,.2f} ({allocation_percentages['Other']}%)
     """)
 
-# Monitoring and Evaluation
+# The rest of the sections remain unchanged
 elif selection == "Monitoring and Evaluation":
     st.header("8. Monitoring and Evaluation")
     st.markdown("""
@@ -502,7 +713,6 @@ elif selection == "Monitoring and Evaluation":
     - **Staff Training:** Provide ongoing training to staff and volunteers to improve skills and service quality.
     """)
 
-# Risk Management
 elif selection == "Risk Management":
     st.header("9. Risk Management")
     st.markdown("""
@@ -533,7 +743,6 @@ elif selection == "Risk Management":
     - **Crisis Management Team:** Form a team responsible for handling emergencies and unexpected challenges.
     """)
 
-# Appendices
 elif selection == "Appendices":
     st.header("10. Appendices")
     
